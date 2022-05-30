@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template"
+	xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5>
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Users</title>
+</head>
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">Liste des Users</div>
+				<div class="card-body">
+
+					
+					<table class="table table-striped">
+						<tr>
+							<th>ID</th>
+							<th>Nom de users</th>
+							<th>Roles</th>
+						</tr>
+						<tr th:each="s:${users}">
+							<td th:text="${s.user_id}"></td>
+							<td th:text="${s.username}"></td>
+							<td><ul th:each="r:${s.roles}">
+								<li th:text="${r.role}"></li>
+							</ul></td>
+						
+	
+							<td sec:authorize="hasRole('ADMIN')"><a
+								class="btn btn-success"
+								th:href="@{modifierUser(id=${s.user_id})}">Editer</a></td>
+							<td sec:authorize="hasRole('ADMIN')"><a
+								class="btn btn-danger"
+								onclick="return confirm('Etes-vous sûr ?')"
+								th:href="@{supprimerUser(id=${s.user_id},
+                                page=${currentPage},size=${size})}">Supprimer</a></td>
+						</tr>
+					</table>
+					<ul class="nav nav-pills">
+						<li th:each="page,status:${pages}"><a
+							th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+							th:href="@{ ListeUsers(page=${status.index}, size=${size} ) }"
+							th:text="${status.index }"></a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

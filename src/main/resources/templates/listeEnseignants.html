@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template"
+	xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5>
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Enseignants</title>
+</head>
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">Liste des Enseignants</div>
+				<div class="card-body">
+
+					<form th:action="@{/search}" method="get">
+						<div class="mb-3">
+							<label>Mot Clé:</label> <input type="text" name="nomEn"
+								placeholder="nom de l'enseignant" /> <input type="submit"
+								class="btn btn-primary" value="Chercher">
+						</div>
+					</form>
+
+
+					<form th:action="@{/search2}" method="get">
+						<div class="mb-3">
+							<div class="form-group">
+								<label class="control-label">Specialité :</label> 
+								<select name="s" class="form-control"  >
+									<option th:each="e:${specilates}" th:value="${e.idSpe}" th:text="${e.nomSpe}"></option>
+								</select>
+							</div>
+							<input type="submit" class="btn btn-primary" value="Chercher">
+						</div>
+					</form>
+
+
+
+					<table class="table table-striped">
+						<tr>
+							<th>ID</th>
+							<th>Nom Enseignant</th>
+							<th>Salaire</th>
+							<th>Date d'embauche</th>
+							<th>Specialité</th>
+
+						</tr>
+						<tr th:each="e:${enseignants}">
+							<td th:text="${e.idEnseignant}"></td>
+							<td th:text="${e.nomEnseignant}"></td>
+							<td th:text="${e.salaireEnseignant}"></td>
+							<td th:text="${e.dateEmbauche}"></td>
+							<td th:if="${!#strings.isEmpty(e.specilate)}"
+								th:text="${e.specilate.nomSpe}"></td>
+							<td th:if="${#strings.isEmpty(e.specilate)}"
+								th:text="${'Pas de specialité'}"></td>
+							<td sec:authorize="hasRole('ADMIN')"><a
+								class="btn btn-success"
+								th:href="@{modifierEnseignant(id=${e.idEnseignant})}">Editer</a></td>
+							<td sec:authorize="hasRole('ADMIN')"><a
+								class="btn btn-danger"
+								onclick="return confirm('Etes-vous sûr ?')"
+								th:href="@{supprimerEnseignant(id=${e.idEnseignant},
+page=${currentPage},size=${size})}">Supprimer</a></td>
+						</tr>
+					</table>
+					<ul class="nav nav-pills">
+						<li th:each="page,status:${pages}"><a
+							th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+							th:href="@{ ListeEnseignants(page=${status.index}, size=${size} ) }"
+							th:text="${status.index }"></a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

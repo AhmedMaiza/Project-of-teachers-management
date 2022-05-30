@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5>
+
+<link rel="stylesheet" type="text/css"
+href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+ <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
+ <script type="text/javascript"
+src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<head>
+<meta charset="utf-8">
+<title>Gestion des Enseignants</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+ <!-- Brand -->
+ <a class="navbar-brand" href="#">Gestion des Enseignants</a>
+ <!-- Links -->
+ <ul class="navbar-nav">
+ <li class="nav-item">
+ <a class="nav-link" th:href="@{ListeEnseignants}" >Home</a>
+ </li>
+ <!-- Dropdown -->
+ <li class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+ Enseignants
+ </a>
+ <div class="dropdown-menu">
+ <a sec:authorize="hasRole('ADMIN')" class="dropdown-item" th:href="@{showCreate}">Ajouter</a>
+ <a class="dropdown-item" th:href="@{ListeEnseignants}">Lister</a>
+ </div>
+ </li>
+ 
+ <li class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+ Specialité
+ </a>
+ <div class="dropdown-menu">
+ <a sec:authorize="hasRole('ADMIN')" class="dropdown-item" th:href="@{showCreate1}">Ajouter</a>
+ <a class="dropdown-item" th:href="@{ListeSpecilates}">Lister</a>
+ </div>
+ </li>
+ 
+ 
+ <li class="nav-item dropdown">
+ <a sec:authorize="hasRole('ADMIN')" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+ User
+ </a>
+ <div class="dropdown-menu">
+ <a class="dropdown-item" th:href="@{showCreate2}">Ajouter</a>
+ <a class="dropdown-item" th:href="@{ListeUsers}">Lister</a>
+ </div>
+ </li>
+ 
+ </ul>
+ 
+
+ <ul class="navbar-nav ml-auto" >
+ <li class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+<span sec:authentication="name"></span> </a>
+ <div class="dropdown-menu">
+ <a sec:authorize="!isAuthenticated()" class="dropdown-item"
+th:href="@{login}">login</a>
+ <a sec:authorize="isAuthenticated()" class="dropdown-item"
+th:href="@{logout}">logout</a>
+ <a class="dropdown-item" href="#">Profile</a>
+ </div>
+ </li>
+ </ul>
+</nav>
+<section layout:fragment="Mycontent" >
+</section>
+</body>
+</html>
